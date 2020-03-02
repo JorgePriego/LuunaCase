@@ -22,7 +22,7 @@ mydb = mysql.connector.connect(
     user="Jorge",
     passwd="pass")
 
-my cursor = mydb.cursor()
+mycursor = mydb.cursor()
 
 mycursor.execute("CREATE DATABASE database")
 
@@ -84,7 +84,54 @@ class User(Resource):
 
         "Manda correo de aviso"
         return 201
+
+
+class Product(Resource):
+    
+    def get(self,name):
+        "Checar en base de datos si existe y tomarlo"
         
+        return "User not found", 404
+        
+    def post(self, name): 
+        parser = reqparse.RequestParser()
+        parser.add_argument("price")
+        parser.add_argument("brand")
+        
+        args= parser.parse_args()
+        
+        sql = "INSERT INTO products (name, price, brand) VALUES (%s,%f,%s)"
+        val = name, args["price"], args["brand"]
+        mycursor.execute(sql,val)
+        
+        mydb.commit()
+        return 201
+        
+    def put(self, name):
+        parser = reqparse.RequestParser()
+        parser.add_argument("price")
+        parser.add_argument("brand")
+        
+        args= parser.parse_args()
+        
+        sql = "UPDATE users SET price = '"+args["price"]+"' WHERE name = '"+name+"'"
+        mycursor.execute(sql)
+        
+        mydb.commit()
+        return 201
+        
+        
+    def delete(self, name):
+        parser = reqparse.RequestParser()
+        parser.add_argument("brand")
+        
+        args= parser.parse_args()
+        
+        sql = "DELETE FROM users WHERE email = '"+args["brand"]+"'"
+        mycursor.execute(sql)
+        mydb.commit()
+
+        return 201        
     
 api.add_resource(User, "/user/<string:name>")
 
