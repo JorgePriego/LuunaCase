@@ -114,7 +114,7 @@ class Product(Resource):
         
         args= parser.parse_args()
         
-        sql = "UPDATE users SET price = '"+args["price"]+"' WHERE name = '"+name+"'"
+        sql = "UPDATE products SET price = '"+args["price"]+"' WHERE name = '"+name+"'"
         mycursor.execute(sql)
         
         mydb.commit()
@@ -127,7 +127,7 @@ class Product(Resource):
         
         args= parser.parse_args()
         
-        sql = "DELETE FROM users WHERE email = '"+args["brand"]+"'"
+        sql = "DELETE FROM products WHERE brand = '"+args["brand"]+"'"
         mycursor.execute(sql)
         mydb.commit()
 
